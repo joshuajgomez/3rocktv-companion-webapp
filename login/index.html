@@ -57,10 +57,11 @@
                     const docRef = doc(db, "companion_login_sessions", docId);
                     await updateDoc(docRef, {
                         status: serverUrl,
-                        serverUrl: serverUrl,
+                        server_url: serverUrl,
                         username: username,
                         password: password,
                         port: 8080,
+                        expiry_date: 1267532630000, // Jan 1, 2030
                     }, { merge: true });
                 } else {
                     status.innerText = "Missing id param";    

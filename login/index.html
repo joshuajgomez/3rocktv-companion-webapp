@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online typing for 3RockTV</title>
+    <title>3RockTV: Login companion</title>
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px; }
         input { padding: 10px; width: 300px; margin-bottom: 10px; }
@@ -40,25 +40,34 @@
         const urlParams = new URLSearchParams(window.location.search);
         const docId = urlParams.get('id'); // This looks for "?id="
 
-        const textField = document.getElementById('textField');
+        const tfServerUrl = document.getElementById('tf_server_url');
+        const tfUsername = document.getElementById('tf_username');
+        const tfPassword = document.getElementById('tf_password');
+        const btnLogin = document.getElementById('btn_submit');
+
         const status = document.getElementById('status');
 
-        textField.addEventListener('input', async () => {
+        btnLogin.addEventListener('click', async () => {
             try {
                 if (docId) {
-                    const textValue = textField.value;
+                    const serverUrl = tfServerUrl.value;
+                    const username = tfUsername.value;
+                    const password = tfPassword.value;
                     // Update existing document instead of creating a new one
-                    const docRef = doc(db, "online_typing_sessions", docId);
+                    const docRef = doc(db, "companion_login_sessions", docId);
                     await updateDoc(docRef, {
-                        input: textValue,
-                        lastModified: new Date()
+                        status: serverUrl,
+                        serverUrl: serverUrl,
+                        username: username,
+                        password: password,
+                        port: 8080,
                     }, { merge: true });
                 } else {
                     status.innerText = "Missing id param";    
                 }
             } catch (e) {
                 console.error("Error adding document: ", e);
-                status.innerText = "Typing session expired. Scan qrcode again";
+                status.innerText = "Error: " + e.message;
             }
         });
     </script>

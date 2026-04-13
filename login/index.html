@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online typing for 3RockTV</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px; }
+        input { padding: 10px; width: 300px; margin-bottom: 10px; }
+        button { padding: 10px 20px; cursor: pointer; background: #039be5; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2>3RockTV: Login using IPTV credentials</h2>
+    <input type="text" id="tf_server_url" placeholder="Server URL">
+    <input type="text" id="tf_username" placeholder="Username">
+    <input type="text" id="tf_password" placeholder="Password">
+    <button id="btn_submit">Login</button>
+
+    <p id="status"></p>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyB77chZqaSxaoAZXzHGqhXXeWnrczgNN4Q",
+          authDomain: "rocktv-b1cf5.firebaseapp.com",
+          projectId: "rocktv-b1cf5",
+          storageBucket: "rocktv-b1cf5.firebasestorage.app",
+          messagingSenderId: "653593189256",
+          appId: "1:653593189256:web:9a4e8ba64d02d51719783d",
+          measurementId: "G-0JL5M9V0KJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id'); // This looks for "?id="
+
+        const textField = document.getElementById('textField');
+        const status = document.getElementById('status');
+
+        textField.addEventListener('input', async () => {
+            try {
+                if (docId) {
+                    const textValue = textField.value;
+                    // Update existing document instead of creating a new one
+                    const docRef = doc(db, "online_typing_sessions", docId);
+                    await updateDoc(docRef, {
+                        input: textValue,
+                        lastModified: new Date()
+                    }, { merge: true });
+                } else {
+                    status.innerText = "Missing id param";    
+                }
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                status.innerText = "Typing session expired. Scan qrcode again";
+            }
+        });
+    </script>
+</body>
+</html>

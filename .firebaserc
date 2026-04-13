@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "rocktv-b1cf5"
+  },
+  "targets": {
+    "rocktv-b1cf5": {
+      "hosting": {
+        "companion-login": [
+          "companion-login"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

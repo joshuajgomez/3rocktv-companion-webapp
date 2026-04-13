@@ -7,6 +7,9 @@
       "hosting": {
         "companion-login": [
           "companion-login"
+        ],
+        "companion-typing": [
+          "companion-typing"
         ]
       }
     }

@@ -1,5 +1,5 @@
 {
-  "hosting": {
+  "hosting": [{
     "target": "companion-login",
     "public": "login",
     "ignore": [
@@ -13,5 +13,20 @@
         "destination": "/index.html"
       }
     ]
-  }
+  },
+{
+      "target": "companion-typing",
+      "public": "typing",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }]
 }
